@@ -1,5 +1,4 @@
 import logging
-from tkinter.messagebox import NO
 
 import telegram
 from telegram.ext import Updater, MessageHandler, CommandHandler, Filters
@@ -8,6 +7,7 @@ import ephem
 from datetime import datetime as dt
 from clean_string import get_clean_string
 from difflib import get_close_matches
+from city_game import handle_city
 
 
 planets = [
@@ -32,7 +32,8 @@ PROXY = {
 def greet_user(update: telegram.Update, context) -> None:
     text = 'call /start'
     logging.info(text)
-    update.message.reply_text(text)
+    if update.message:
+        update.message.reply_text(text)
 
 
 def get_correct_planet_name(user_planet_name: str, planets: list[str]) -> str:
@@ -53,7 +54,7 @@ def get_correct_planet_name(user_planet_name: str, planets: list[str]) -> str:
 
 
 def handle_planet(update: telegram.Update, context) -> None:
-    if len(update.message.text.split(' ')) == 1:
+    if update.message and len(update.message.text.split(' ')) == 1:
         update.message.reply_text('Нou must to use /planet with a name planet')
     else:
         planet = get_correct_planet_name(update.message.text.split()[1], planets)
@@ -133,6 +134,7 @@ def main():
     dp.add_handler(CommandHandler("planet", handle_planet))
     dp.add_handler(CommandHandler("wordcount", handle_wordcount))
     dp.add_handler(CommandHandler("next_fool_moon", handle_next_fool_moon))
+    dp.add_handler(CommandHandler("city", handle_city))
     dp.add_handler(MessageHandler(Filters.text, talk_to_me))
 
     mybot.start_polling()
