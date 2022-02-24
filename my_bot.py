@@ -8,6 +8,7 @@ from datetime import datetime as dt
 from clean_string import get_clean_string
 from difflib import get_close_matches
 from city_game import handle_city
+from calculator import handle_calculator
 
 
 planets = [
@@ -22,7 +23,7 @@ logging.basicConfig(format='%(name)s - %(levelname)s - %(message)s',
 
 PROXY = {
     'proxy_url': settings.PROXY_URL,
-    'urllib3_proxy_kwargs': {
+    'urllib3_proxy_kwargs': {   
         'username': settings.PROXY_USERNAME,
         'password': settings.PROXY_PASSWORD
     }
@@ -135,6 +136,7 @@ def main():
     dp.add_handler(CommandHandler("wordcount", handle_wordcount))
     dp.add_handler(CommandHandler("next_fool_moon", handle_next_fool_moon))
     dp.add_handler(CommandHandler("city", handle_city))
+    dp.add_handler(CommandHandler("calc", handle_calculator))
     dp.add_handler(MessageHandler(Filters.text, talk_to_me))
 
     mybot.start_polling()
