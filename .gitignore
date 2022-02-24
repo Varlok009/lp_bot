@@ -2,6 +2,8 @@
 *.mypy_cache
 *.vscode
 *.DS_Store
+*.log
+settings.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
